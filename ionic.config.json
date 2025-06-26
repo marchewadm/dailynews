@@ -1,0 +1,7 @@
+{
+  "name": "DailyNews",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
