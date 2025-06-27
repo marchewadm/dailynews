@@ -2,12 +2,10 @@
 import {
   IonButton,
   IonInput,
-  IonItem,
   IonList,
 } from "@ionic/vue";
 
 import { toTypedSchema } from "@vee-validate/zod";
-
 import { Field, useForm } from "vee-validate";
 import { loginSchema } from "@/schemas/authenticationSchemas";
 
@@ -29,44 +27,44 @@ const onSubmit = handleSubmit(async (values) => {
       style="display: flex; flex-direction: column; gap: 10px;"
       class="ion-align-items-center"
     >
-      <IonItem
-        style="width: 100%;"
-        class="ion-no-padding"
+      <Field
+        v-slot="{ field, errorMessage }"
+        name="email"
       >
-        <Field
-          v-slot="{ field }"
-          name="email"
-        >
-          <IonInput
-            type="email"
-            placeholder="Enter your email"
-            label="Email"
-            label-placement="floating"
-            color="tertiary"
-            required
-            v-bind="field"
-          />
-        </Field>
-      </IonItem>
-      <IonItem
-        style="width: 100%;"
-        class="ion-no-padding"
+        <IonInput
+          type="email"
+          placeholder="Enter your email"
+          label="Email"
+          label-placement="floating"
+          color="tertiary"
+          helper-text="Enter a valid email address"
+          :error-text="errorMessage"
+          :class="{
+            'ion-invalid ion-touched': errorMessage,
+          }"
+          required
+          v-bind="field"
+        />
+      </Field>
+      <Field
+        v-slot="{ field, errorMessage }"
+        name="password"
       >
-        <Field
-          v-slot="{ field }"
-          name="password"
-        >
-          <IonInput
-            type="password"
-            placeholder="Enter your password"
-            label="Password"
-            label-placement="floating"
-            color="tertiary"
-            required
-            v-bind="field"
-          />
-        </Field>
-      </IonItem>
+        <IonInput
+          type="password"
+          placeholder="Enter your password"
+          label="Password"
+          label-placement="floating"
+          color="tertiary"
+          helper-text="Password must be at least 8 characters long"
+          :error-text="errorMessage"
+          :class="{
+            'ion-invalid ion-touched': errorMessage,
+          }"
+          required
+          v-bind="field"
+        />
+      </Field>
       <IonButton
         style="width: 100%;"
         color="tertiary"
