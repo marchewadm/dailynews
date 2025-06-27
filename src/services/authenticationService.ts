@@ -2,7 +2,7 @@ import type { Router } from "vue-router";
 import type { LoginFormValues, RegisterFormValues } from "@/types/authentication";
 import { FirebaseError } from "firebase/app";
 
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 
 export async function loginUserService(data: LoginFormValues, router: Router) {
   try {
@@ -11,10 +11,11 @@ export async function loginUserService(data: LoginFormValues, router: Router) {
     const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
     const user = userCredential.user;
 
-    router.push("/");
+    router.push("/home");
   }
-  catch (error) {getCurrentUserService()
-getCurrentUserService()
+  catch (error) {
+    getCurrentUserService();
+    getCurrentUserService();
     if (error instanceof FirebaseError) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -36,7 +37,28 @@ export async function registerUserService(data: RegisterFormValues, router: Rout
 
     await updateProfile(user, { displayName: data.name });
 
-    router.push("/");
+    router.push("/home");
+  }
+  catch (error) {
+    if (error instanceof FirebaseError) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      console.error("Firebase Error:", errorCode, errorMessage);
+    }
+    else {
+      console.error("An unexpected error occurred:", error);
+    }
+  }
+}
+
+export async function logoutUserService(router: Router) {
+  try {
+    const auth = getAuth();
+
+    await signOut(auth);
+
+    router.push("/auth");
   }
   catch (error) {
     if (error instanceof FirebaseError) {
@@ -56,10 +78,8 @@ export async function getCurrentUserService() {
 
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-        unsubscribe()
-        resolve(user)
-      },
-      reject
-    )
-  })
+      unsubscribe();
+      resolve(user);
+    }, reject);
+  });
 }

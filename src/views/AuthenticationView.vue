@@ -4,6 +4,7 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
+  IonPage,
   IonRow,
   IonTitle,
   IonToolbar,
@@ -27,29 +28,31 @@ const formTitle = computed(() => {
 </script>
 
 <template>
-  <IonHeader>
-    <IonToolbar>
-      <IonTitle>
-        {{ formTitle }}
-      </IonTitle>
-    </IonToolbar>
-  </IonHeader>
-  <IonContent>
-    <IonGrid style="height: 100%;">
-      <IonRow
-        style="height: 100%"
-        class="ion-align-items-center ion-justify-content-center"
-      >
-        <IonCol>
-          <CardAuthenticationLogin
-            v-if="authenticationForm === 'login'"
-          />
-          <CardAuthenticationRegister
-            v-else
-          />
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-    <AnimationWave />
-  </IonContent>
+  <IonPage>
+    <IonHeader>
+      <IonToolbar>
+        <IonTitle>
+          {{ formTitle }}
+        </IonTitle>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent>
+      <IonGrid style="height: 100%;">
+        <IonRow
+          style="height: 100%"
+          class="ion-align-items-center ion-justify-content-center"
+        >
+          <IonCol>
+            <CardAuthenticationLogin
+              v-if="authenticationForm === 'login'"
+            />
+            <CardAuthenticationRegister
+              v-else
+            />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <AnimationWave />
+    </IonContent>
+  </IonPage>
 </template>

@@ -5,7 +5,21 @@ import { getCurrentUserService } from "@/services/authenticationService";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    component: () => import("../views/HomeView.vue"),
+    redirect: "/home",
+  },
+  {
+    path: "/",
+    component: () => import("../components/navigation/NavigationTabs.vue"),
+    children: [
+      {
+        path: "/",
+        redirect: "/home",
+      },
+      {
+        path: "home",
+        component: () => import("../views/HomeView.vue"),
+      },
+    ],
   },
   {
     path: "/auth",
