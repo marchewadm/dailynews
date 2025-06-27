@@ -1,7 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHistory } from "@ionic/vue-router";
-import { storeToRefs } from "pinia";
-import { useUserStore } from "@/stores/userStore";
+import { getCurrentUserService } from "@/services/authenticationService";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -19,15 +18,14 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
-  const userStore = useUserStore();
-  const { isAuthenticated } = storeToRefs(userStore);
+router.beforeEach(async (to) => {
+  const isAuthenticated = await getCurrentUserService();
 
-  if (!isAuthenticated.value && to.path !== "/auth") {
+  if (!isAuthenticated && to.path !== "/auth") {
     return { path: "/auth" };
   }
 
-  if (isAuthenticated.value && to.path === "/auth") {
+  if (isAuthenticated && to.path === "/auth") {
     return { path: "/" };
   }
 });

@@ -7,14 +7,18 @@ import {
 
 import { toTypedSchema } from "@vee-validate/zod";
 import { Field, useForm } from "vee-validate";
+import { useRouter } from "vue-router";
 import { registerSchema } from "@/schemas/authenticationSchemas";
+import { registerUserService } from "@/services/authenticationService";
 
 const { resetForm, handleSubmit, isSubmitting } = useForm({
   validationSchema: toTypedSchema(registerSchema),
 });
 
+const router = useRouter();
+
 const onSubmit = handleSubmit(async (values) => {
-  console.log("Form submitted with values:", values);
+  await registerUserService(values, router);
   resetForm();
 });
 </script>

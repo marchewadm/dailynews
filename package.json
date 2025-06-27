@@ -21,6 +21,7 @@
     "@ionic/vue": "^8.0.0",
     "@ionic/vue-router": "^8.0.0",
     "@vee-validate/zod": "^4.15.1",
+    "firebase": "^11.9.1",
     "ionicons": "^7.0.0",
     "pinia": "^3.0.3",
     "vee-validate": "^4.15.1",
