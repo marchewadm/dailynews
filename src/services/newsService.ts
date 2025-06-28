@@ -23,9 +23,12 @@ export async function getLatestNewsService(pageSize: number = 10, language: stri
 export async function getSavedArticlesService() {
   try {
     const auth = getAuth();
-    const userId = auth.currentUser!.uid;
+    const user = auth.currentUser;
 
-    const q = query(collection(db, "users", userId, "savedArticles"));
+    if (!user)
+      return;
+
+    const q = query(collection(db, "users", user.uid, "savedArticles"));
 
     const querySnapshot = await getDocs(q);
 
@@ -45,9 +48,12 @@ export async function getSavedArticlesService() {
 export async function saveArticleService(articleTitle: string, articleUrl: string, imageUrl: string, publishedAt: string, description: string) {
   try {
     const auth = getAuth();
-    const userId = auth.currentUser!.uid;
+    const user = auth.currentUser;
 
-    const articleRef = doc(db, "users", userId, "savedArticles", articleTitle);
+    if (!user)
+      return;
+
+    const articleRef = doc(db, "users", user.uid, "savedArticles", articleTitle);
     await setDoc(articleRef, {
       title: articleTitle,
       url: articleUrl,
@@ -65,9 +71,12 @@ export async function saveArticleService(articleTitle: string, articleUrl: strin
 export async function removeSavedArticleService(articleTitle: string) {
   try {
     const auth = getAuth();
-    const userId = auth.currentUser!.uid;
+    const user = auth.currentUser;
 
-    const articleRef = doc(db, "users", userId, "savedArticles", articleTitle);
+    if (!user)
+      return;
+
+    const articleRef = doc(db, "users", user.uid, "savedArticles", articleTitle);
     await deleteDoc(articleRef);
   }
   catch (error) {
