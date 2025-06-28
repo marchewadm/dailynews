@@ -1,15 +1,22 @@
+import type { User } from "firebase/auth";
 import type { Router } from "vue-router";
-import type { LoginFormValues, RegisterFormValues } from "@/types/authentication";
+import type {
+  LoginFormValues,
+  RegisterFormValues,
+} from "@/types/authentication";
 
 import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
   getAuth,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
 } from "firebase/auth";
+import { useModalStore } from "@/stores/modalStore";
 import { displayErrorNotification, displaySuccessNotification } from "@/utils/utils";
 
 export async function loginUserService(data: LoginFormValues, router: Router) {
@@ -19,7 +26,7 @@ export async function loginUserService(data: LoginFormValues, router: Router) {
     const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
     const user = userCredential.user;
 
-    router.push("/home");
+    router.push("/tabs/home");
 
     displaySuccessNotification("Signed in successfully!");
   }
@@ -52,7 +59,7 @@ export async function registerUserService(data: RegisterFormValues, router: Rout
 
     await updateProfile(user, { displayName: data.name });
 
-    router.push("/home");
+    router.push("/tabs/home");
 
     displaySuccessNotification("Registered successfully! We've signed you in.");
   }
@@ -99,7 +106,7 @@ export async function logoutUserService(router: Router) {
   }
 }
 
-export async function getCurrentUserService() {
+export async function getCurrentUserService(): Promise<User | null> {
   const auth = getAuth();
 
   return new Promise((resolve, reject) => {
@@ -108,4 +115,36 @@ export async function getCurrentUserService() {
       resolve(user);
     }, reject);
   });
+}
+
+export async function reauthenticateUserService(data: LoginFormValues) {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const { $reset } = useModalStore();
+
+    const credentials = EmailAuthProvider.credential(data.email, data.password);
+
+    await reauthenticateWithCredential(user!, credentials);
+    $reset();
+    displaySuccessNotification("Reauthenticated successfully! You can now perform sensitive actions.");
+  }
+  catch (error) {
+    if (error instanceof FirebaseError) {
+      const errorCode = error.code;
+
+      if (errorCode === "auth/invalid-credential") {
+        displayErrorNotification("Invalid credentials. Please check your email and password.");
+      }
+      else if (errorCode === "auth/internal-error") {
+        displayErrorNotification("An internal error occurred. Please try again later.");
+      }
+      else {
+        displayErrorNotification();
+      }
+    }
+    else {
+      displayErrorNotification();
+    }
+  }
 }

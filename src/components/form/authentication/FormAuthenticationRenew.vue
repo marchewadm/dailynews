@@ -1,35 +1,27 @@
 <script setup lang="ts">
-import {
-  IonButton,
-  IonInput,
-  IonList,
-} from "@ionic/vue";
-
+import { IonInput, IonList } from "@ionic/vue";
 import { toTypedSchema } from "@vee-validate/zod";
 import { Field, useForm } from "vee-validate";
-import { useRouter } from "vue-router";
 import { loginSchema } from "@/schemas/authenticationSchemas";
-import { loginUserService } from "@/services/authenticationService";
+import { reauthenticateUserService } from "@/services/authenticationService";
 
-const { resetForm, handleSubmit } = useForm({
+const { handleSubmit } = useForm({
   validationSchema: toTypedSchema(loginSchema),
 });
 
-const router = useRouter();
-
 const onSubmit = handleSubmit(async (values) => {
-  await loginUserService(values, router);
-  resetForm();
+  await reauthenticateUserService(values);
 });
 </script>
 
 <template>
   <form
+    id="reauthenticateForm"
     @submit="onSubmit"
   >
     <IonList
       style="display: flex; flex-direction: column; gap: 10px; background-color: inherit;"
-      class="ion-align-items-center"
+      class="ion-align-items-center ion-padding"
     >
       <Field
         v-slot="{ field, errorMessage }"
@@ -69,13 +61,6 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="field"
         />
       </Field>
-      <IonButton
-        style="width: 100%;"
-        color="tertiary"
-        type="submit"
-      >
-        Sign in
-      </IonButton>
     </IonList>
   </form>
 </template>

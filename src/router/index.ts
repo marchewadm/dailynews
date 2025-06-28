@@ -1,23 +1,35 @@
 import type { RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { getCurrentUserService } from "@/services/authenticationService";
+import { getUserProfileService } from "@/services/userService";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/home",
+    redirect: "/tabs/home",
   },
   {
-    path: "/",
+    path: "/tabs/",
     component: () => import("../components/navigation/NavigationTabs.vue"),
     children: [
       {
-        path: "/",
-        redirect: "/home",
+        path: "",
+        redirect: "home",
       },
       {
         path: "home",
         component: () => import("../views/HomeView.vue"),
+      },
+      {
+        path: "saved-news",
+        component: () => import("../views/SavedNewsView.vue"),
+      },
+      {
+        path: "profile",
+        component: () => import("../views/ProfileView.vue"),
+        beforeEnter: async () => {
+          await getUserProfileService();
+        },
       },
     ],
   },
@@ -40,7 +52,7 @@ router.beforeEach(async (to) => {
   }
 
   if (isAuthenticated && to.path === "/auth") {
-    return { path: "/" };
+    return { path: "/tabs/home" };
   }
 });
 

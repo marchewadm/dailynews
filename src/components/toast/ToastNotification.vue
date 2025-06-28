@@ -18,7 +18,7 @@ const { $reset } = toastStore;
 const { message, isOpen, isError } = storeToRefs(toastStore);
 
 const getToastColor = computed(() => {
-  return isError.value ? "danger" : "tertiary";
+  return isError.value ? "danger" : "success";
 });
 </script>
 

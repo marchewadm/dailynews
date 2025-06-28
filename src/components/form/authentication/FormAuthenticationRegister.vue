@@ -11,7 +11,7 @@ import { useRouter } from "vue-router";
 import { registerSchema } from "@/schemas/authenticationSchemas";
 import { registerUserService } from "@/services/authenticationService";
 
-const { resetForm, handleSubmit, isSubmitting } = useForm({
+const { resetForm, handleSubmit } = useForm({
   validationSchema: toTypedSchema(registerSchema),
 });
 
@@ -28,7 +28,7 @@ const onSubmit = handleSubmit(async (values) => {
     @submit="onSubmit"
   >
     <IonList
-      style="display: flex; flex-direction: column; gap: 10px;"
+      style="display: flex; flex-direction: column; gap: 10px; background-color: inherit;"
       class="ion-align-items-center"
     >
       <Field

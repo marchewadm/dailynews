@@ -7,19 +7,15 @@ import {
 
 import { toTypedSchema } from "@vee-validate/zod";
 import { Field, useForm } from "vee-validate";
-import { useRouter } from "vue-router";
-import { loginSchema } from "@/schemas/authenticationSchemas";
-import { loginUserService } from "@/services/authenticationService";
+import { profilePasswordUpdateSchema } from "@/schemas/profileSchemas";
+import { updateUserPasswordService } from "@/services/userService";
 
-const { resetForm, handleSubmit } = useForm({
-  validationSchema: toTypedSchema(loginSchema),
+const { handleSubmit } = useForm({
+  validationSchema: toTypedSchema(profilePasswordUpdateSchema),
 });
 
-const router = useRouter();
-
 const onSubmit = handleSubmit(async (values) => {
-  await loginUserService(values, router);
-  resetForm();
+  await updateUserPasswordService(values);
 });
 </script>
 
@@ -33,31 +29,12 @@ const onSubmit = handleSubmit(async (values) => {
     >
       <Field
         v-slot="{ field, errorMessage }"
-        name="email"
-      >
-        <IonInput
-          type="email"
-          placeholder="Enter your email"
-          label="Email"
-          label-placement="floating"
-          color="tertiary"
-          helper-text="Enter a valid email address"
-          :error-text="errorMessage"
-          :class="{
-            'ion-invalid ion-touched': errorMessage,
-          }"
-          required
-          v-bind="field"
-        />
-      </Field>
-      <Field
-        v-slot="{ field, errorMessage }"
-        name="password"
+        name="currentPassword"
       >
         <IonInput
           type="password"
           placeholder="Enter your password"
-          label="Password"
+          label="Current password"
           label-placement="floating"
           color="tertiary"
           helper-text="Password must be at least 8 characters long"
@@ -69,12 +46,50 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="field"
         />
       </Field>
+      <Field
+        v-slot="{ field, errorMessage }"
+        name="newPassword"
+      >
+        <IonInput
+          type="password"
+          placeholder="Enter your password"
+          label="New password"
+          label-placement="floating"
+          color="tertiary"
+          helper-text="New password must be at least 8 characters long and different from the current password"
+          :error-text="errorMessage"
+          :class="{
+            'ion-invalid ion-touched': errorMessage,
+          }"
+          required
+          v-bind="field"
+        />
+      </Field>
+      <Field
+        v-slot="{ field, errorMessage }"
+        name="newPassword2"
+      >
+        <IonInput
+          type="password"
+          placeholder="Enter your password"
+          label="Confirm password"
+          label-placement="floating"
+          color="tertiary"
+          helper-text="Confirm your password"
+          :error-text="errorMessage"
+          :class="{
+            'ion-invalid ion-touched': errorMessage,
+          }"
+          required
+          v-bind="field"
+        />
+      </Field>
       <IonButton
-        style="width: 100%;"
+        style="align-self: flex-end;"
         color="tertiary"
         type="submit"
       >
-        Sign in
+        Save
       </IonButton>
     </IonList>
   </form>
