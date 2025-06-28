@@ -1,5 +1,6 @@
 import { IonicVue } from "@ionic/vue";
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 
@@ -47,7 +48,9 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-initializeApp(firebaseConfig);
+const firebase = initializeApp(firebaseConfig);
+
+export const db = getFirestore(firebase);
 
 const pinia = createPinia();
 
