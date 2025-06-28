@@ -67,5 +67,6 @@ const { toggleForm } = useAuthenticationStore();
   color: inherit;
   background-color: inherit;
   text-decoration: underline;
+  font-size: inherit;
 }
 </style>

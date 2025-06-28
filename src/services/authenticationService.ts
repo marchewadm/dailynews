@@ -1,8 +1,16 @@
 import type { Router } from "vue-router";
 import type { LoginFormValues, RegisterFormValues } from "@/types/authentication";
-import { FirebaseError } from "firebase/app";
 
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
+import { displayErrorNotification, displaySuccessNotification } from "@/utils/utils";
 
 export async function loginUserService(data: LoginFormValues, router: Router) {
   try {
@@ -12,18 +20,25 @@ export async function loginUserService(data: LoginFormValues, router: Router) {
     const user = userCredential.user;
 
     router.push("/home");
+
+    displaySuccessNotification("Signed in successfully!");
   }
   catch (error) {
-    getCurrentUserService();
-    getCurrentUserService();
     if (error instanceof FirebaseError) {
       const errorCode = error.code;
-      const errorMessage = error.message;
 
-      console.error("Firebase Error:", errorCode, errorMessage);
+      if (errorCode === "auth/invalid-credential") {
+        displayErrorNotification("Invalid credentials. Please check your email and password.");
+      }
+      else if (errorCode === "auth/internal-error") {
+        displayErrorNotification("An internal error occurred. Please try again later.");
+      }
+      else {
+        displayErrorNotification();
+      }
     }
     else {
-      console.error("An unexpected error occurred:", error);
+      displayErrorNotification();
     }
   }
 }
@@ -38,16 +53,28 @@ export async function registerUserService(data: RegisterFormValues, router: Rout
     await updateProfile(user, { displayName: data.name });
 
     router.push("/home");
+
+    displaySuccessNotification("Registered successfully! We've signed you in.");
   }
   catch (error) {
     if (error instanceof FirebaseError) {
       const errorCode = error.code;
-      const errorMessage = error.message;
 
-      console.error("Firebase Error:", errorCode, errorMessage);
+      if (errorCode === "auth/email-already-in-use") {
+        displayErrorNotification("Email already in use. Please use a different email.");
+      }
+      else if (errorCode === "auth/invalid-email") {
+        displayErrorNotification("Invalid email address. Please enter a valid email.");
+      }
+      else if (errorCode === "auth/invalid-display-name") {
+        displayErrorNotification("Invalid name. Please enter a valid name.");
+      }
+      else {
+        displayErrorNotification();
+      }
     }
     else {
-      console.error("An unexpected error occurred:", error);
+      displayErrorNotification();
     }
   }
 }
@@ -59,16 +86,15 @@ export async function logoutUserService(router: Router) {
     await signOut(auth);
 
     router.push("/auth");
+
+    displaySuccessNotification("Logged out successfully!");
   }
   catch (error) {
     if (error instanceof FirebaseError) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      console.error("Firebase Error:", errorCode, errorMessage);
+      displayErrorNotification("Failed to log out. Please try again later.");
     }
     else {
-      console.error("An unexpected error occurred:", error);
+      displayErrorNotification();
     }
   }
 }

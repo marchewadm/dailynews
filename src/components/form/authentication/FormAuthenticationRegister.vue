@@ -39,6 +39,7 @@ const onSubmit = handleSubmit(async (values) => {
           type="text"
           placeholder="Enter your name"
           label="Name"
+          :maxlength="50"
           label-placement="floating"
           color="tertiary"
           helper-text="Enter your first name"
