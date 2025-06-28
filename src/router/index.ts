@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "home",
-        component: () => import("../views/HomeView.vue"),
+        component: () => import("../views/LatestNewsView.vue"),
       },
       {
         path: "saved-news",
