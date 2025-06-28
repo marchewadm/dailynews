@@ -13,6 +13,11 @@ import { loginUserService } from "@/services/authenticationService";
 
 const { resetForm, handleSubmit } = useForm({
   validationSchema: toTypedSchema(loginSchema),
+  // !!! Only for demonstration purposes !!!
+  initialValues: {
+    email: "user@example.com",
+    password: "tH3bE@Jx&5mW",
+  },
 });
 
 const router = useRouter();
