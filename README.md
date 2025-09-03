@@ -30,9 +30,9 @@ cd dailynews
 
 To install the required dependencies, run the following command in the project root directory:
 
-    ```bash
-    npm install
-    ```
+  ```bash
+  npm install
+  ```
 
 ## Before usage
 
@@ -43,48 +43,48 @@ Before running application, make sure that `.env` file is created. To populate `
 
 ### Running the project in browser
 
-    ```bash
-    ionic serve
-    ```
+  ```bash
+  ionic serve
+  ```
 
-    To allow the app to run on external devices (e.g., mobile phones), you can use the `--external` flag:
-    
-    ```bash
-    ionic serve --external
-    ```
+  To allow the app to run on external devices (e.g., mobile phones), you can use the `--external` flag:
+  
+  ```bash
+  ionic serve --external
+  ```
 
 ### Running the project in emulator
 
 First, you need to build the project. Use the following command to build the project:
 
-    ```bash
-    ionic build
-    ```
+  ```bash
+  ionic build
+  ```
 
 #### Building for Android
 
 Adding Android platform to the project can be done using the following command:
 
-    ```bash
-    npx cap add android
-    ```
+  ```bash
+  npx cap add android
+  ```
 
 After adding the Android platform, you launch the Android Studio IDE to build the project:
 
-    ```bash
-    npx cap open android
-    ```
+  ```bash
+  npx cap open android
+  ```
 
 #### Building for iOS
 
 Adding iOS platform to the project can be done using the following command:
 
-    ```bash
-    npx cap add ios
-    ```
+  ```bash
+  npx cap add ios
+  ```
 
 After adding the iOS platform, you launch the Xcode IDE to build the project:
 
-    ```bash
-    npx cap open ios
-    ```
+  ```bash
+  npx cap open ios
+  ```
