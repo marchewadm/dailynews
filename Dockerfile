@@ -1,0 +1,28 @@
+ARG NODE_VERSION=22.19.0
+
+FROM node:${NODE_VERSION}-slim AS build
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm install -g @ionic/cli && npm ci
+
+COPY . ./
+
+ARG VITE_FIREBASE_API_KEY
+ARG VITE_FIREBASE_AUTH_DOMAIN
+ARG VITE_FIREBASE_PROJECT_ID
+ARG VITE_FIREBASE_STORAGE_BUCKET
+ARG VITE_FIREBASE_MESSAGING_SENDER_ID
+ARG VITE_FIREBASE_APP_ID
+ARG VITE_FIREBASE_MEASUREMENT_ID
+ARG VITE_NEWS_API_KEY
+
+RUN ionic build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
