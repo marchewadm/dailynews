@@ -4,6 +4,7 @@ Daily News is a mobile application built with Ionic Framework and Vue.js, design
 
 ## Table Of Contents
 
+- [Demo](#demo)
 - [Prerequisites](#prerequisites)
 - [Before Usage](#before-usage)
 - [Installation](#installation)
@@ -14,6 +15,10 @@ Daily News is a mobile application built with Ionic Framework and Vue.js, design
   - [Running The Project In Emulator](#running-the-project-in-emulator)
     - [Building For Android](#building-for-android)
     - [Building For iOS](#building-for-ios)
+
+## Demo
+
+https://github.com/user-attachments/assets/2506e17d-8fce-45d5-8290-27139cb6ead6
 
 ## Prerequisites
 
